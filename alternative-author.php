@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Alternative Author
-Plugin URI: https://github.com/ernestortiz/wp_alterauthor/
+Plugin URI: https://github.com/ernestortiz/wp_alternative_author/
 Description: This is a simple way of consider an alternative post author (without creating a wordpress user as author).
 Author: Ernesto Ortiz
 Version: 0.1
