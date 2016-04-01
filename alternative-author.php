@@ -1,35 +1,34 @@
-<?php
 /*
 Plugin Name: Alternative Author
 Plugin URI: https://github.com/ernestortiz/wp_alternative_author/
 Description: This is a simple way of consider an alternative post author (without creating a wordpress user as author).
 Author: Ernesto Ortiz
-Version: 0.1
+Version: 1.0
 Author URI: https://github.com/ernestortiz
 */
 
 
-/////// add metabox ///////
+/*** add metabox ***/
 function add_alterauthor_metabox() {
 	add_meta_box('alterauthor_mbox', __('Alternative Author'), 'show_alterauthor_mbox', 'post', 'normal', 'high');
 }
 add_action('add_meta_boxes', 'add_alterauthor_metabox');
-/////// draw metabox ///////////
+
+/*** draw metabox ***/
 function show_alterauthor_mbox($post) {
 	?>
 	<div class="option-item" id="alter-mbox-item">
-		<label><?php echo __('Alternative Author\'s Name');?>:</label>
+		<label><?php echo __('Alternative Author\'s Full Name');?>:</label>
 		<input type="text" name="altername" id="altername" value="<?php echo get_post_meta($post->ID, 'altername', true)?>" /><br/>
-		<label><?php echo __('Alternative Data');?>:</label>
-		<textarea name="alterdata" id="alterdata"><?php echo get_post_meta($post->ID, 'alterdata', true)?></textarea><br/>
-		<label><?php echo __('Alternative Author\'s Link');?></label>
+		<label><?php echo __('Alternative Author\'s Link');?>:</label>
 		<input type="text" name="alterlnk" id="alterlnk" value="<?php echo get_post_meta($post->ID, 'alterlnk', true)?>" /><br/>
-		<br/><?php echo __('NOTE: If you write an alternative author\'s name here, this person will appears as the author of the post instead of the person in wordpress Author metabox.' );?>
-  		<input type="hidden" name="alterauthor_mbox_nonce" value="<?php echo wp_create_nonce('alterauthor_mbox');?>" />
+		<label><?php echo __('Alternative Author\'s Data');?>:</label><br/>
+		<textarea name="alterdata" id="alterdata"><?php echo get_post_meta($post->ID, 'alterdata', true)?></textarea><br/>
+		<input type="hidden" name="alterauthor_mbox_nonce" value="<?php echo wp_create_nonce('alterauthor_mbox');?>" />
 	</div>
   <?php
 }
-/////// save metabox data ///////
+/*** save metabox data ***/
 function save_alterauthor_mbox($post_id) {
 	// check nonce
   	if (!isset($_POST['alterauthor_mbox_nonce']) || !wp_verify_nonce($_POST['alterauthor_mbox_nonce'], 'alterauthor_mbox')) return $post_id;
@@ -57,7 +56,7 @@ function save_alterauthor_mbox($post_id) {
 }
 add_action('save_post', 'save_alterauthor_mbox');
 
-/////// draw alternative_author ///////
+/*** draw alternative_author ***/
 add_filter( 'author_link', 'filter_alterauthor_link');
 function filter_alterauthor_link($the_link){
 	global $post;
@@ -78,12 +77,12 @@ function filter_alterauthor_name($the_author){
 	else return $the_author;
 }
 
-/////// some functions for your theme ///////
+/*** some functions for your theme ***/
 function has_alter_author(){
 	global $post;
 	$get_meta = get_post_custom($post->ID);
 	$altername = trim($get_meta['altername'][0]);
-	if (!empty($altername)) 
+	if (!empty($altername))
 		return true;
 	else return false;
 }
