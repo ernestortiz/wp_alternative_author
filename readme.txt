@@ -30,19 +30,6 @@ Upload the Alternative Author plugin to your blog, Activate it. You're done!
 
 == Frequently Asked Questions ==
 
-	= How I show the alternative author description on my theme? =
-
-	At this current version, the way to do this is through two functions provided by this plugin (has_alter_author and get_alter_descr).
-	You can write a code on your theme similar to the following:
-	
-	<?php 
-		if (has_alter_author()){
-			echo get_alter_descr();
-		}else{
-			the_author_meta('description');
-		}
-	?>
-
 == Donation ==
 
 If you want to make a contribution, please do it through PAYPAL, to ernestortizcu@yahoo.es.
