@@ -1,3 +1,4 @@
+<?php 
 /*
 Plugin Name: Alternative Author
 Plugin URI: https://github.com/ernestortiz/wp_alternative_author/
@@ -57,39 +58,29 @@ function save_alterauthor_mbox($post_id) {
 add_action('save_post', 'save_alterauthor_mbox');
 
 /*** draw alternative_author ***/
-add_filter( 'author_link', 'filter_alterauthor_link');
-function filter_alterauthor_link($the_link){
-	global $post;
-	$get_meta = get_post_custom($post->ID);
-	$alterlnk = trim($get_meta['alterlnk'][0]);
-	if (!empty($alterlnk))
-		return $alterlnk;
-	else return $the_link;
-}
-//
 add_filter( 'the_author', 'filter_alterauthor_name' );
 function filter_alterauthor_name($the_author){
-	global $post;
-	$get_meta = get_post_custom($post->ID);
-	$altername = trim($get_meta['altername'][0]);
-	if (!empty($altername))
-		return $altername;
-	else return $the_author;
+	return has_alter_author('altername', $the_author);
+}
+//
+add_filter( 'author_link', 'filter_alterauthor_link');
+function filter_alterauthor_link($the_link){
+	return has_alter_author('alterlnk', $the_link);
+}
+//
+add_filter('get_the_author_description', 'filter_alterauthor_descr' );
+function filter_alterauthor_descr($the_descr){
+	return has_alter_author('alterdata', $the_descr);
 }
 
-/*** some functions for your theme ***/
-function has_alter_author(){
+/*** functions ***/
+function has_alter_author($get = 'altername', $default = ''){
 	global $post;
 	$get_meta = get_post_custom($post->ID);
 	$altername = trim($get_meta['altername'][0]);
+	$return = trim($get_meta[$get][0]);
 	if (!empty($altername))
-		return true;
-	else return false;
-}
-function get_alter_descr(){
-	global $post;
-	$get_meta = get_post_custom($post->ID);
-	$alterdescr = trim($get_meta['alterdata'][0]);
-	return $alterdescr;
+		return $return;
+	else return $default;
 }
 ?>
